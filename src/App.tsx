@@ -10,9 +10,9 @@ function App() {
   return (
     <Map
       initialViewState={{
-        longitude: -122.4,
-        latitude: 37.8,
-        zoom: 14,
+        longitude: 0,
+        latitude: 0,
+        zoom: 1,
       }}
       style={{
         position: "absolute",
