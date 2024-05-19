@@ -6,10 +6,11 @@ import Map, {
   GeolocateControl,
   ScaleControl,
 } from "react-map-gl/maplibre";
+import Cities from "./Cities";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 
-const mapStyle = `https://api.maptiler.com/maps/basic/style.json?key=${
+const mapStyle = `https://api.maptiler.com/maps/nl-cartiqo-dark/style.json?key=${
   import.meta.env.VITE_APP_MAPTILER_API_KEY
 }`;
 
@@ -30,6 +31,7 @@ function App() {
       <NavigationControl />
       <GeolocateControl />
       <ScaleControl />
+      <Cities />
     </Map>
   );
 }
