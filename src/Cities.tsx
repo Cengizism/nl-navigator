@@ -70,6 +70,7 @@ const Cities = () => {
 
       if (!features || !features.length) {
         setActiveCity(null);
+        setHoveredCity(null);
         lastFeatureIdRef.current = null;
         return;
       }
