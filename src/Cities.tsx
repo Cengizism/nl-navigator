@@ -43,8 +43,8 @@ const Cities = () => {
   const { current: map } = useMap();
 
   const [citiesTownsData] = useState<Features>(nlCitiesTownsData as Features);
-  const [activeCity, setActiveCity] = useState<MapGeoJSONFeature | null>(null);
 
+  const [activeCity, setActiveCity] = useState<MapGeoJSONFeature | null>(null);
   const [hoveredCity, setHoveredCity] = useState<MapGeoJSONFeature | null>(
     null
   );
@@ -69,7 +69,7 @@ const Cities = () => {
       });
 
       if (!features || !features.length) {
-        setActiveCity(null);
+        // setActiveCity(null);
         setHoveredCity(null);
         lastFeatureIdRef.current = null;
         return;
@@ -82,25 +82,67 @@ const Cities = () => {
 
       if (feature.properties.id !== lastFeatureIdRef.current) {
         lastFeatureIdRef.current = feature.properties.id;
-        setActiveCity(feature);
+        setHoveredCity(feature);
       }
     },
     []
   );
 
+  const onClick = useCallback(
+    (event: {
+      point:
+        | PointLike
+        | [PointLike, PointLike]
+        | QueryRenderedFeaturesOptions
+        | undefined;
+    }) => {
+      const { point } = event;
+      const features = map?.queryRenderedFeatures(point, {
+        layers: ["cities-towns-layer"],
+      });
+
+      if (!features || !features.length) {
+        // setActiveCity(null);
+        // setHoveredCity(null);
+        // lastFeatureIdRef.current = null;
+        return;
+      }
+
+      const feature = features && features[0];
+      console.log(feature);
+
+      // setMouseLocation(point as { x: number; y: number });
+      setActiveCity(feature);
+
+      // if (feature.properties.id !== lastFeatureIdRef.current) {
+      //   lastFeatureIdRef.current = feature.properties.id;
+      //   setHoveredCity(feature);
+      // }
+    },
+    [hoveredCity]
+  );
+
   useEffect(() => {
     map?.on("mousemove", onMouseMove);
+    map?.on("click", onClick);
 
     return () => {
       map?.off("mousemove", onMouseMove);
+      map?.off("click", onClick);
     };
-  }, [map, onMouseMove]);
+  }, [map, onMouseMove, onClick]);
 
   return (
     <>
       <Source id="cities-towns-source" type="geojson" data={citiesTownsData}>
         <Layer {...cityTownLayerProps} />
       </Source>
+
+      {hoveredCity && (
+        <Source id="hovered-city-source" type="geojson" data={hoveredCity}>
+          <Layer {...activeCityTownLayerProps} />
+        </Source>
+      )}
 
       {activeCity && (
         <Source id="active-city-source" type="geojson" data={activeCity}>
