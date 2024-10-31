@@ -2,7 +2,7 @@
 
 A simple application for navigating the Netherlands using various libraries and API's listed below.
 
-[Demo](https://cengizism-space.github.io/nl-navigator/)
+[Demo](https://nl-navigator.netlify.app/)
 
 ## Stack
 
